@@ -5,4 +5,4 @@ edition = "2024"
 repository = "https://github.com/HappySunChild/glam-rect"
 
 [dependencies]
-glam = "0.33.7"
+glam = "0.33.*"
