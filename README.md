@@ -1,5 +1,5 @@
 # glam-rect
-An extension for [`glam`](https://crates.io/crates/glam) that adds support for rects, rectangles, rect regions, or whatever you prefer to call them.
+An extension for [`glam`](https://crates.io/crates/glam) that adds support for rects, rectangles, rect regions, or whatever you prefer to call them and maybe more in the future.
 
 ## Features
 * `f32 Rect`
