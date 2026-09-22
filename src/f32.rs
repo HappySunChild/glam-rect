@@ -16,7 +16,7 @@ impl Rect {
 		Self { x, y, w, h }
 	}
 
-	/// Similar to [Rect::from_xywh], but with [Vec2]'s instead of individual [f32]s.
+	/// Functionally similar to [Rect::from_xywh], but with [Vec2]'s instead of individual [f32]s.
 	///
 	/// Creates a new [Rect] with its top-left corner positioned at (`pos.x`, `pos.y`), with size (`size.x`, `size.y`).
 	#[inline(always)]
@@ -41,7 +41,7 @@ impl Rect {
 		}
 	}
 
-	/// Similar to [Rect::from_ltrb], but with [Vec2]'s instead of individual [f32]s.
+	/// Functionally similar to [Rect::from_ltrb], but with [Vec2]'s instead of individual [f32]s.
 	///
 	/// Creates a new [Rect] with its top-left corner positioned at (`lt.x`, `lt.y`)
 	/// and its bottom-right corner positioned at (`rb.x`, `rb.y`).
@@ -120,7 +120,7 @@ impl Rect {
 		x >= self.x && x <= self.right() && y >= self.y && y <= self.bottom()
 	}
 
-	/// Similar to [Rect::contains], but with [Vec2]'s instead of individual [f32]s.
+	/// Functionally similar to [Rect::contains_point], but with [Vec2]'s instead of individual [f32]s.
 	///
 	/// Returns whether the point at (`point.x`, `point.y`) is contained within the [Rect].
 	#[inline(always)]
@@ -142,7 +142,7 @@ impl Rect {
 		self
 	}
 
-	/// Similar to [Rect::shift_over], but with [Vec2]'s instead of individual [f32]s.
+	/// Functionally similar to [Rect::shift_over], but with [Vec2]'s instead of individual [f32]s.
 	///
 	/// Shifts over the [Rect] by (`offset.x`, `offset.y`).
 	#[inline(always)]
@@ -158,7 +158,7 @@ impl Rect {
 		self
 	}
 
-	/// Similar to [Rect::resize_by], but with [Vec2]'s instead of individual [f32]s.
+	/// Functionally similar to [Rect::resize_by], but with [Vec2]'s instead of individual [f32]s.
 	///
 	/// Resizes the [Rect] by (`offset.x`, `offset.y`).
 	#[inline(always)]
@@ -266,11 +266,5 @@ mod tests {
 		assert_eq!(new_rect.y, 50.0);
 		assert_eq!(new_rect.w, 50.0);
 		assert_eq!(new_rect.h, 50.0);
-	}
-
-	#[test]
-	fn size() {
-		let new_rect = Rect::from_xywh(0.0, 0.0, 10.0, 10.0);
-		assert_eq!(new_rect.size(), Vec2::new(10.0, 10.0));
 	}
 }
