@@ -1,6 +1,17 @@
 use glam::Vec2;
 use std::fmt;
 
+/// A 2-dimensional rectangle.
+///
+/// The `width` and `height` of a rectangle are technically allowed to be negative, but it is heavily discouraged.
+///
+/// # Examples
+/// ```
+/// use glam_rect::Rect;
+///
+/// let new_rect = Rect::from_xywh(0.0, 0.0, 10.0, 10.0);
+/// assert!(new_rect.contains_point(1.0, 1.0));
+/// ```
 #[derive(Clone, Copy, PartialEq)]
 pub struct Rect {
 	pub x: f32,
@@ -45,12 +56,16 @@ impl Rect {
 	}
 
 	/// Returns the y-coordinate of the bottom edge of the [Rect].
+	///
+	/// This is typically equivalent to the sum of [Rect::y] and [Rect::h].
 	#[inline(always)]
 	pub fn bottom(&self) -> f32 {
 		self.y + self.h
 	}
 
 	/// Returns the x-coordinate of the right edge of the [Rect].
+	///
+	/// This is typically equivalent to the sum of [Rect::x] and [Rect::w].
 	#[inline(always)]
 	pub fn right(&self) -> f32 {
 		self.x + self.w
@@ -86,39 +101,70 @@ impl Rect {
 		Vec2::new(self.x + self.w / 2.0, self.y + self.h / 2.0)
 	}
 
+	/// Returns the size of the [Rect] as a [Vec2] with components (`w`, `h`).
+	#[inline(always)]
+	pub fn size(&self) -> Vec2 {
+		Vec2::new(self.w, self.h)
+	}
+
+	/// Returns the area of the [Rect].
+	///
+	/// This is typically equivalent to the product of [Rect::w] and [Rect::h].
+	#[inline(always)]
+	pub fn area(&self) -> f32 {
+		self.w * self.h
+	}
+
+	/// Normalizes the [Rect] such that `w` and `h` are non-negative.
+	///
+	/// If either `w` or `h` is negative, the corresponding position is adjusted so that the
+	/// rectangle retains the same bounds.
+	///
+	/// Returns a mutable reference to self to allow chaining.
+	#[inline(always)]
+	pub fn normalize(&mut self) -> &mut Self {
+		self.x = self.left().min(self.right());
+		self.y = self.top().min(self.bottom());
+		self.w = self.w.abs();
+		self.h = self.h.abs();
+		self
+	}
+
+	/// Sets the position of the [Rect] to (`new_x`, `new_y`).
+	#[inline(always)]
+	pub fn reposition(&mut self, new_x: f32, new_y: f32) -> &mut Self {
+		self.x = new_x;
+		self.y = new_y;
+		self
+	}
+
+	/// Sets the size of the [Rect] to (`new_w`, `new_h`).
+	#[inline(always)]
+	pub fn resize(&mut self, new_w: f32, new_h: f32) -> &mut Self {
+		self.w = new_w;
+		self.h = new_h;
+		self
+	}
+
 	/// Returns whether the point at (`x`, `y`) is contained within the [Rect].
 	#[inline(always)]
 	pub fn contains_point(&self, x: f32, y: f32) -> bool {
 		x >= self.x && x <= self.right() && y >= self.y && y <= self.bottom()
 	}
 
-	///
+	/// Returns whether the given [Rect] fits within the [Rect].
 	#[inline(always)]
+	pub fn contains_rect(&self, other: &Rect) -> bool {
+		self.contains_point(other.x, other.y) && self.contains_point(other.right(), other.bottom())
 	}
 
-	#[inline(always)]
-	}
-
-	/// Shifts over the [Rect] by (`x_offset`, `y_offset`).
-	#[inline(always)]
-	pub fn shift_over(mut self, x_offset: f32, y_offset: f32) -> Self {
-		self.x += x_offset;
-		self.y += y_offset;
-		self
-	}
-
-	#[inline(always)]
-	}
-
-	/// Resizes the [Rect] by (`w_offset`, `h_offset`).
-	#[inline(always)]
-	pub fn resize_by(mut self, w_offset: f32, h_offset: f32) -> Self {
-		self.w += w_offset;
-		self.h += h_offset;
-		self
-	}
-
-	#[inline(always)]
+	// https://stackoverflow.com/questions/13390333/two-rectangles-intersection/44120056#44120056
+	/// Returns whether the [Rect] overlaps with another [Rect].
+	pub fn overlaps_with_rect(&self, other: &Rect) -> bool {
+		!(self.right() < other.x
+			|| other.right() < self.x
+			|| self.bottom() < other.y
+			|| other.bottom() < self.y)
 	}
 }
 
@@ -188,5 +234,20 @@ mod tests {
 	}
 
 	#[test]
+	fn overlapping() {
+		// half overlap
+		let rect_a = Rect::from_xywh(0.0, 0.0, 1.0, 1.0);
+		let rect_b = Rect::from_xywh(0.5, 0.5, 1.0, 1.0);
+		assert!(rect_a.overlaps_with_rect(&rect_b));
+		assert!(rect_b.overlaps_with_rect(&rect_a));
+
+		// self overlapping
+		let rect_a = Rect::from_xywh(0.0, 0.0, 1.0, 1.0);
+		assert!(rect_a.overlaps_with_rect(&rect_a));
+
+		// not overlapping
+		let rect_a = Rect::from_xywh(0.0, 0.0, 1.0, 1.0);
+		let rect_b = Rect::from_xywh(1.1, 1.1, 1.0, 1.0);
+		assert!(!rect_a.overlaps_with_rect(&rect_b));
 	}
 }
