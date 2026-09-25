@@ -3,5 +3,5 @@ An extension for [`glam`](https://crates.io/crates/glam) that adds support for r
 
 ## Features
 * [x] `f32 Rect (Rect)`
-* [x] `f64 Rect (DRect)`
-* [x] `PxRect`
+* [ ] `f64 Rect (DRect)`
+* [ ] `PxRect`
