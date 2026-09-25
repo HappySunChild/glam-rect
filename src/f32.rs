@@ -42,6 +42,14 @@ impl Rect {
 	/// Returns the y-coordinate of the top edge of the [Rect].
 	///
 	/// This is typically equivalent to [Rect::y].
+	///
+	/// # Examples
+	/// ```
+	/// use glam_rect::Rect;
+	///
+	/// let new_rect = Rect::from_xywh(0.0, 0.0, 10.0, 10.0);
+	/// assert_eq!(new_rect.top(), 0.0);
+	/// ```
 	#[inline(always)]
 	pub fn top(&self) -> f32 {
 		self.y
@@ -50,6 +58,14 @@ impl Rect {
 	/// Returns the x-coordinate of the left edge of the [Rect].
 	///
 	/// This is typically equivalent to [Rect::x].
+	///
+	/// # Examples
+	/// ```
+	/// use glam_rect::Rect;
+	///
+	/// let new_rect = Rect::from_xywh(0.0, 0.0, 10.0, 10.0);
+	/// assert_eq!(new_rect.left(), 0.0);
+	/// ```
 	#[inline(always)]
 	pub fn left(&self) -> f32 {
 		self.x
@@ -58,6 +74,14 @@ impl Rect {
 	/// Returns the y-coordinate of the bottom edge of the [Rect].
 	///
 	/// This is typically equivalent to the sum of [Rect::y] and [Rect::h].
+	///
+	/// # Examples
+	/// ```
+	/// use glam_rect::Rect;
+	///
+	/// let new_rect = Rect::from_xywh(0.0, 0.0, 10.0, 10.0);
+	/// assert_eq!(new_rect.bottom(), 10.0);
+	/// ```
 	#[inline(always)]
 	pub fn bottom(&self) -> f32 {
 		self.y + self.h
@@ -66,42 +90,104 @@ impl Rect {
 	/// Returns the x-coordinate of the right edge of the [Rect].
 	///
 	/// This is typically equivalent to the sum of [Rect::x] and [Rect::w].
+	///
+	/// # Examples
+	/// ```
+	/// use glam_rect::Rect;
+	///
+	/// let new_rect = Rect::from_xywh(0.0, 0.0, 10.0, 10.0);
+	/// assert_eq!(new_rect.right(), 10.0);
+	/// ```
 	#[inline(always)]
 	pub fn right(&self) -> f32 {
 		self.x + self.w
 	}
 
 	/// Returns the position of the top-left corner as a [Vec2].
+	///
+	/// # Examples
+	/// ```
+	/// use glam_rect::Rect;
+	/// use glam::Vec2;
+	///
+	/// let new_rect = Rect::from_xywh(0.0, 0.0, 10.0, 10.0);
+	/// assert_eq!(new_rect.top_left(), Vec2::new(0.0, 0.0));
+	/// ```
 	#[inline(always)]
 	pub fn top_left(&self) -> Vec2 {
 		Vec2::new(self.x, self.y)
 	}
 
 	/// Returns the position of the top-right corner as a [Vec2].
+	///
+	/// # Examples
+	/// ```
+	/// use glam_rect::Rect;
+	/// use glam::Vec2;
+	///
+	/// let new_rect = Rect::from_xywh(0.0, 0.0, 10.0, 10.0);
+	/// assert_eq!(new_rect.top_right(), Vec2::new(10.0, 0.0));
+	/// ```
 	#[inline(always)]
 	pub fn top_right(&self) -> Vec2 {
 		Vec2::new(self.x + self.w, self.y)
 	}
 
 	/// Returns the position of the bottom-left corner as a [Vec2].
+	///
+	/// # Examples
+	/// ```
+	/// use glam_rect::Rect;
+	/// use glam::Vec2;
+	///
+	/// let new_rect = Rect::from_xywh(0.0, 0.0, 10.0, 10.0);
+	/// assert_eq!(new_rect.bottom_left(), Vec2::new(0.0, 10.0));
+	/// ```
 	#[inline(always)]
 	pub fn bottom_left(&self) -> Vec2 {
 		Vec2::new(self.x, self.y + self.h)
 	}
 
 	/// Returns the position of the bottom-right corner as a [Vec2].
+	///
+	/// # Examples
+	/// ```
+	/// use glam_rect::Rect;
+	/// use glam::Vec2;
+	///
+	/// let new_rect = Rect::from_xywh(0.0, 0.0, 10.0, 10.0);
+	/// assert_eq!(new_rect.bottom_right(), Vec2::new(10.0, 10.0));
+	/// ```
 	#[inline(always)]
 	pub fn bottom_right(&self) -> Vec2 {
 		Vec2::new(self.x + self.w, self.y + self.h)
 	}
 
 	/// Returns the position of the center of the [Rect] as a [Vec2].
+	///
+	/// # Examples
+	/// ```
+	/// use glam_rect::Rect;
+	/// use glam::Vec2;
+	///
+	/// let new_rect = Rect::from_xywh(0.0, 0.0, 10.0, 10.0);
+	/// assert_eq!(new_rect.center(), Vec2::new(5.0, 5.0));
+	/// ```
 	#[inline(always)]
 	pub fn center(&self) -> Vec2 {
 		Vec2::new(self.x + self.w / 2.0, self.y + self.h / 2.0)
 	}
 
 	/// Returns the size of the [Rect] as a [Vec2] with components (`w`, `h`).
+	///
+	/// # Examples
+	/// ```
+	/// use glam_rect::Rect;
+	/// use glam::Vec2;
+	///
+	/// let new_rect = Rect::from_xywh(0.0, 0.0, 10.0, 10.0);
+	/// assert_eq!(new_rect.size(), Vec2::new(10.0, 10.0));
+	/// ```
 	#[inline(always)]
 	pub fn size(&self) -> Vec2 {
 		Vec2::new(self.w, self.h)
@@ -110,6 +196,14 @@ impl Rect {
 	/// Returns the area of the [Rect].
 	///
 	/// This is typically equivalent to the product of [Rect::w] and [Rect::h].
+	///
+	/// # Examples
+	/// ```
+	/// use glam_rect::Rect;
+	///
+	/// let new_rect = Rect::from_xywh(0.0, 0.0, 10.0, 10.0);
+	/// assert_eq!(new_rect.area(), 100.0);
+	/// ```
 	#[inline(always)]
 	pub fn area(&self) -> f32 {
 		self.w * self.h
@@ -119,8 +213,6 @@ impl Rect {
 	///
 	/// If either `w` or `h` is negative, the corresponding position is adjusted so that the
 	/// rectangle retains the same bounds.
-	///
-	/// Returns a mutable reference to self to allow chaining.
 	#[inline(always)]
 	pub fn normalize(&mut self) -> &mut Self {
 		self.x = self.left().min(self.right());
