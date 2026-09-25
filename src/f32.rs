@@ -114,7 +114,7 @@ impl Rect {
 	/// assert_eq!(new_rect.top_left(), Vec2::new(0.0, 0.0));
 	/// ```
 	#[inline(always)]
-	pub fn top_left(&self) -> Vec2 {
+	pub fn top_left(self) -> Vec2 {
 		Vec2::new(self.x, self.y)
 	}
 
@@ -129,7 +129,7 @@ impl Rect {
 	/// assert_eq!(new_rect.top_right(), Vec2::new(10.0, 0.0));
 	/// ```
 	#[inline(always)]
-	pub fn top_right(&self) -> Vec2 {
+	pub fn top_right(self) -> Vec2 {
 		Vec2::new(self.x + self.w, self.y)
 	}
 
@@ -144,7 +144,7 @@ impl Rect {
 	/// assert_eq!(new_rect.bottom_left(), Vec2::new(0.0, 10.0));
 	/// ```
 	#[inline(always)]
-	pub fn bottom_left(&self) -> Vec2 {
+	pub fn bottom_left(self) -> Vec2 {
 		Vec2::new(self.x, self.y + self.h)
 	}
 
@@ -159,7 +159,7 @@ impl Rect {
 	/// assert_eq!(new_rect.bottom_right(), Vec2::new(10.0, 10.0));
 	/// ```
 	#[inline(always)]
-	pub fn bottom_right(&self) -> Vec2 {
+	pub fn bottom_right(self) -> Vec2 {
 		Vec2::new(self.x + self.w, self.y + self.h)
 	}
 
@@ -174,7 +174,7 @@ impl Rect {
 	/// assert_eq!(new_rect.center(), Vec2::new(5.0, 5.0));
 	/// ```
 	#[inline(always)]
-	pub fn center(&self) -> Vec2 {
+	pub fn center(self) -> Vec2 {
 		Vec2::new(self.x + self.w / 2.0, self.y + self.h / 2.0)
 	}
 
@@ -189,7 +189,7 @@ impl Rect {
 	/// assert_eq!(new_rect.size(), Vec2::new(10.0, 10.0));
 	/// ```
 	#[inline(always)]
-	pub fn size(&self) -> Vec2 {
+	pub fn size(self) -> Vec2 {
 		Vec2::new(self.w, self.h)
 	}
 
@@ -205,54 +205,101 @@ impl Rect {
 	/// assert_eq!(new_rect.area(), 100.0);
 	/// ```
 	#[inline(always)]
-	pub fn area(&self) -> f32 {
+	pub fn area(self) -> f32 {
 		self.w * self.h
 	}
 
-	/// Normalizes the [Rect] such that `w` and `h` are non-negative.
+	/// Returns a normalized [Rect] such that `w` and `h` are non-negative.
 	///
 	/// If either `w` or `h` is negative, the corresponding position is adjusted so that the
 	/// rectangle retains the same bounds.
+	///
+	/// # Examples
+	/// ```
+	/// use glam_rect::Rect;
+	///
+	/// let new_rect = Rect::from_xywh(0.0, 0.0, -10.0, 10.0);
+	/// assert_eq!(new_rect.normalized(), Rect::from_xywh(-10.0, 0.0, 10.0, 10.0));
+	/// ```
 	#[inline(always)]
-	pub fn normalize(&mut self) -> &mut Self {
-		self.x = self.left().min(self.right());
-		self.y = self.top().min(self.bottom());
-		self.w = self.w.abs();
-		self.h = self.h.abs();
-		self
+	pub fn normalized(self) -> Self {
+		Self {
+			x: self.left().min(self.right()),
+			y: self.top().min(self.bottom()),
+			w: self.w.abs(),
+			h: self.h.abs(),
+		}
 	}
 
-	/// Sets the position of the [Rect] to (`new_x`, `new_y`).
+	/// Returns a [Rect] with the same size and its top-left corner positioned at (`new_x`, `new_y`).
+	///
+	/// # Examples
+	/// ```
+	/// use glam_rect::Rect;
+	///
+	/// let new_rect = Rect::from_xywh(0.0, 0.0, 10.0, 10.0);
+	/// assert_eq!(new_rect.repositioned(10.0, 5.0), Rect::from_xywh(10.0, 5.0, 10.0, 10.0));
+	/// ```
 	#[inline(always)]
-	pub fn reposition(&mut self, new_x: f32, new_y: f32) -> &mut Self {
-		self.x = new_x;
-		self.y = new_y;
-		self
+	pub fn repositioned(self, new_x: f32, new_y: f32) -> Self {
+		Self {
+			x: new_x,
+			y: new_y,
+			w: self.w,
+			h: self.h,
+		}
 	}
 
-	/// Sets the size of the [Rect] to (`new_w`, `new_h`).
+	/// Returns a [Rect] with a size of (`new_w`, `new_h`) and the same position.
+	///
+	/// # Examples
+	/// ```
+	/// use glam_rect::Rect;
+	///
+	/// let new_rect = Rect::from_xywh(0.0, 0.0, 10.0, 10.0);
+	/// assert_eq!(new_rect.resized(15.0, 5.0), Rect::from_xywh(0.0, 0.0, 15.0, 5.0));
+	/// ```
 	#[inline(always)]
-	pub fn resize(&mut self, new_w: f32, new_h: f32) -> &mut Self {
-		self.w = new_w;
-		self.h = new_h;
-		self
+	pub fn resized(self, new_w: f32, new_h: f32) -> Self {
+		Self {
+			x: self.x,
+			y: self.y,
+			w: new_w,
+			h: new_h,
+		}
 	}
 
 	/// Returns whether the point at (`x`, `y`) is contained within the [Rect].
+	///
+	/// # Examples
+	/// ```
+	/// use glam_rect::Rect;
+	///
+	/// let new_rect = Rect::from_xywh(0.0, 0.0, 10.0, 10.0);
+	/// assert!(new_rect.contains_point(5.0, 5.0));
+	/// ```
 	#[inline(always)]
-	pub fn contains_point(&self, x: f32, y: f32) -> bool {
+	pub fn contains_point(self, x: f32, y: f32) -> bool {
 		x >= self.x && x <= self.right() && y >= self.y && y <= self.bottom()
 	}
 
 	/// Returns whether the given [Rect] fits within the [Rect].
+	///
+	/// # Examples
+	/// ```
+	/// use glam_rect::Rect;
+	///
+	/// let new_rect = Rect::from_xywh(0.0, 0.0, 10.0, 10.0);
+	/// assert!(new_rect.contains_rect(Rect::from_xywh(1.0, 1.0, 8.0, 8.0)));
+	/// ```
 	#[inline(always)]
-	pub fn contains_rect(&self, other: &Rect) -> bool {
+	pub fn contains_rect(self, other: Rect) -> bool {
 		self.contains_point(other.x, other.y) && self.contains_point(other.right(), other.bottom())
 	}
 
 	// https://stackoverflow.com/questions/13390333/two-rectangles-intersection/44120056#44120056
 	/// Returns whether the [Rect] overlaps with another [Rect].
-	pub fn overlaps_with_rect(&self, other: &Rect) -> bool {
+	pub fn overlaps_with_rect(self, other: Rect) -> bool {
 		!(self.right() < other.x
 			|| other.right() < self.x
 			|| self.bottom() < other.y
@@ -330,16 +377,16 @@ mod tests {
 		// half overlap
 		let rect_a = Rect::from_xywh(0.0, 0.0, 1.0, 1.0);
 		let rect_b = Rect::from_xywh(0.5, 0.5, 1.0, 1.0);
-		assert!(rect_a.overlaps_with_rect(&rect_b));
-		assert!(rect_b.overlaps_with_rect(&rect_a));
+		assert!(rect_a.overlaps_with_rect(rect_b));
+		assert!(rect_b.overlaps_with_rect(rect_a));
 
 		// self overlapping
 		let rect_a = Rect::from_xywh(0.0, 0.0, 1.0, 1.0);
-		assert!(rect_a.overlaps_with_rect(&rect_a));
+		assert!(rect_a.overlaps_with_rect(rect_a));
 
 		// not overlapping
 		let rect_a = Rect::from_xywh(0.0, 0.0, 1.0, 1.0);
 		let rect_b = Rect::from_xywh(1.1, 1.1, 1.0, 1.0);
-		assert!(!rect_a.overlaps_with_rect(&rect_b));
+		assert!(!rect_a.overlaps_with_rect(rect_b));
 	}
 }
