@@ -16,19 +16,6 @@ impl Rect {
 		Self { x, y, w, h }
 	}
 
-	/// Functionally similar to [Rect::from_xywh], but with [Vec2]'s instead of individual [f32]s.
-	///
-	/// Creates a new [Rect] with its top-left corner positioned at (`pos.x`, `pos.y`), with size (`size.x`, `size.y`).
-	#[inline(always)]
-	pub const fn from_vec2_xywh(pos: Vec2, size: Vec2) -> Self {
-		Self {
-			x: pos.x,
-			y: pos.y,
-			w: size.x,
-			h: size.y,
-		}
-	}
-
 	/// Creates a new [Rect] with its top-left corner positioned at (`left`, `top`)
 	/// and its bottom-right corner positioned at (`right`, `bottom`).
 	#[inline(always)]
@@ -39,21 +26,6 @@ impl Rect {
 			w: right - left,
 			h: bottom - top,
 		}
-	}
-
-	/// Functionally similar to [Rect::from_ltrb], but with [Vec2]'s instead of individual [f32]s.
-	///
-	/// Creates a new [Rect] with its top-left corner positioned at (`lt.x`, `lt.y`)
-	/// and its bottom-right corner positioned at (`rb.x`, `rb.y`).
-	#[inline(always)]
-	pub const fn from_vec2_ltrb(lt: Vec2, rb: Vec2) -> Self {
-		Self::from_ltrb(lt.x, lt.y, rb.x, rb.y)
-	}
-
-	/// Returns the size of the [Rect] as a [Vec2] with components (`w`, `h`).
-	#[inline(always)]
-	pub fn size(&self) -> Vec2 {
-		Vec2::new(self.w, self.h)
 	}
 
 	/// Returns the y-coordinate of the top edge of the [Rect].
@@ -120,18 +92,11 @@ impl Rect {
 		x >= self.x && x <= self.right() && y >= self.y && y <= self.bottom()
 	}
 
-	/// Functionally similar to [Rect::contains_point], but with [Vec2]'s instead of individual [f32]s.
 	///
-	/// Returns whether the point at (`point.x`, `point.y`) is contained within the [Rect].
 	#[inline(always)]
-	pub fn contains_vec2_point(&self, point: Vec2) -> bool {
-		self.contains_point(point.x, point.y)
 	}
 
-	/// Returns whether the given [Rect] fits within the [Rect].
 	#[inline(always)]
-	pub fn contains_rect(&self, other: Rect) -> bool {
-		self.contains_point(other.x, other.y) && self.contains_point(other.right(), other.bottom())
 	}
 
 	/// Shifts over the [Rect] by (`x_offset`, `y_offset`).
@@ -142,12 +107,7 @@ impl Rect {
 		self
 	}
 
-	/// Functionally similar to [Rect::shift_over], but with [Vec2]'s instead of individual [f32]s.
-	///
-	/// Shifts over the [Rect] by (`offset.x`, `offset.y`).
 	#[inline(always)]
-	pub fn shift_over_vec2(self, offset: Vec2) -> Self {
-		self.shift_over(offset.x, offset.y)
 	}
 
 	/// Resizes the [Rect] by (`w_offset`, `h_offset`).
@@ -158,12 +118,7 @@ impl Rect {
 		self
 	}
 
-	/// Functionally similar to [Rect::resize_by], but with [Vec2]'s instead of individual [f32]s.
-	///
-	/// Resizes the [Rect] by (`offset.x`, `offset.y`).
 	#[inline(always)]
-	pub fn resize_by_vec2(self, offset: Vec2) -> Self {
-		self.resize_by(offset.x, offset.y)
 	}
 }
 
@@ -212,21 +167,6 @@ mod tests {
 	}
 
 	#[test]
-	fn constructs_vec2_xywh() {
-		let new_rect = Rect::from_vec2_xywh(Vec2::new(0.0, 0.0), Vec2::new(0.0, 0.0));
-		assert_eq!(new_rect.x, 0.0);
-		assert_eq!(new_rect.y, 0.0);
-		assert_eq!(new_rect.w, 0.0);
-		assert_eq!(new_rect.h, 0.0);
-
-		let new_rect = Rect::from_vec2_xywh(Vec2::new(-10.0, -293.39), Vec2::new(0.75, 10.3));
-		assert_eq!(new_rect.x, -10.0);
-		assert_eq!(new_rect.y, -293.39);
-		assert_eq!(new_rect.w, 0.75);
-		assert_eq!(new_rect.h, 10.3);
-	}
-
-	#[test]
 	fn constructs_ltrb() {
 		let new_rect = Rect::from_ltrb(0.0, 0.0, 0.0, 0.0);
 		assert_eq!(new_rect.x, 0.0);
@@ -248,23 +188,5 @@ mod tests {
 	}
 
 	#[test]
-	fn construct_vec2_ltrb() {
-		let new_rect = Rect::from_vec2_ltrb(Vec2::new(0.0, 0.0), Vec2::new(0.0, 0.0));
-		assert_eq!(new_rect.x, 0.0);
-		assert_eq!(new_rect.y, 0.0);
-		assert_eq!(new_rect.w, 0.0);
-		assert_eq!(new_rect.h, 0.0);
-
-		let new_rect = Rect::from_vec2_ltrb(Vec2::new(0.0, 0.0), Vec2::new(100.0, 100.0));
-		assert_eq!(new_rect.x, 0.0);
-		assert_eq!(new_rect.y, 0.0);
-		assert_eq!(new_rect.w, 100.0);
-		assert_eq!(new_rect.h, 100.0);
-
-		let new_rect = Rect::from_vec2_ltrb(Vec2::new(50.0, 50.0), Vec2::new(100.0, 100.0));
-		assert_eq!(new_rect.x, 50.0);
-		assert_eq!(new_rect.y, 50.0);
-		assert_eq!(new_rect.w, 50.0);
-		assert_eq!(new_rect.h, 50.0);
 	}
 }
