@@ -290,16 +290,25 @@ impl Rect {
 	/// use glam_rect::Rect;
 	///
 	/// let new_rect = Rect::from_xywh(0.0, 0.0, 10.0, 10.0);
-	/// assert!(new_rect.contains_rect(Rect::from_xywh(1.0, 1.0, 8.0, 8.0)));
+	/// assert!(new_rect.contains_rect(&Rect::from_xywh(1.0, 1.0, 8.0, 8.0)));
 	/// ```
 	#[inline(always)]
-	pub fn contains_rect(&self, other: Rect) -> bool {
+	pub fn contains_rect(&self, other: &Rect) -> bool {
 		self.contains_point(other.x, other.y) && self.contains_point(other.right(), other.bottom())
 	}
 
-	// https://stackoverflow.com/questions/13390333/two-rectangles-intersection/44120056#44120056
+	// solution: https://stackoverflow.com/questions/13390333/two-rectangles-intersection/44120056#44120056
 	/// Returns whether the [Rect] overlaps with another [Rect].
-	pub fn overlaps_with_rect(&self, other: Rect) -> bool {
+	///
+	/// # Examples
+	/// ```
+	/// use glam_rect::Rect;
+	///
+	/// let new_rect = Rect::from_xywh(0.0, 0.0, 10.0, 10.0);
+	/// assert!(new_rect.overlaps_with_rect(&Rect::from_xywh(1.0, 1.0, 10.0, 10.0)));
+	/// ```
+	#[inline(always)]
+	pub fn overlaps_with_rect(&self, other: &Rect) -> bool {
 		!(self.right() < other.x
 			|| other.right() < self.x
 			|| self.bottom() < other.y
@@ -377,16 +386,16 @@ mod tests {
 		// half overlap
 		let rect_a = Rect::from_xywh(0.0, 0.0, 1.0, 1.0);
 		let rect_b = Rect::from_xywh(0.5, 0.5, 1.0, 1.0);
-		assert!(rect_a.overlaps_with_rect(rect_b));
-		assert!(rect_b.overlaps_with_rect(rect_a));
+		assert!(rect_a.overlaps_with_rect(&rect_b));
+		assert!(rect_b.overlaps_with_rect(&rect_a));
 
 		// self overlapping
 		let rect_a = Rect::from_xywh(0.0, 0.0, 1.0, 1.0);
-		assert!(rect_a.overlaps_with_rect(rect_a));
+		assert!(rect_a.overlaps_with_rect(&rect_a));
 
 		// not overlapping
 		let rect_a = Rect::from_xywh(0.0, 0.0, 1.0, 1.0);
 		let rect_b = Rect::from_xywh(1.1, 1.1, 1.0, 1.0);
-		assert!(!rect_a.overlaps_with_rect(rect_b));
+		assert!(!rect_a.overlaps_with_rect(&rect_b));
 	}
 }
