@@ -114,7 +114,7 @@ impl Rect {
 	/// assert_eq!(new_rect.top_left(), Vec2::new(0.0, 0.0));
 	/// ```
 	#[inline(always)]
-	pub fn top_left(self) -> Vec2 {
+	pub fn top_left(&self) -> Vec2 {
 		Vec2::new(self.x, self.y)
 	}
 
@@ -129,7 +129,7 @@ impl Rect {
 	/// assert_eq!(new_rect.top_right(), Vec2::new(10.0, 0.0));
 	/// ```
 	#[inline(always)]
-	pub fn top_right(self) -> Vec2 {
+	pub fn top_right(&self) -> Vec2 {
 		Vec2::new(self.x + self.w, self.y)
 	}
 
@@ -144,7 +144,7 @@ impl Rect {
 	/// assert_eq!(new_rect.bottom_left(), Vec2::new(0.0, 10.0));
 	/// ```
 	#[inline(always)]
-	pub fn bottom_left(self) -> Vec2 {
+	pub fn bottom_left(&self) -> Vec2 {
 		Vec2::new(self.x, self.y + self.h)
 	}
 
@@ -159,7 +159,7 @@ impl Rect {
 	/// assert_eq!(new_rect.bottom_right(), Vec2::new(10.0, 10.0));
 	/// ```
 	#[inline(always)]
-	pub fn bottom_right(self) -> Vec2 {
+	pub fn bottom_right(&self) -> Vec2 {
 		Vec2::new(self.x + self.w, self.y + self.h)
 	}
 
@@ -174,7 +174,7 @@ impl Rect {
 	/// assert_eq!(new_rect.center(), Vec2::new(5.0, 5.0));
 	/// ```
 	#[inline(always)]
-	pub fn center(self) -> Vec2 {
+	pub fn center(&self) -> Vec2 {
 		Vec2::new(self.x + self.w / 2.0, self.y + self.h / 2.0)
 	}
 
@@ -189,7 +189,7 @@ impl Rect {
 	/// assert_eq!(new_rect.size(), Vec2::new(10.0, 10.0));
 	/// ```
 	#[inline(always)]
-	pub fn size(self) -> Vec2 {
+	pub fn size(&self) -> Vec2 {
 		Vec2::new(self.w, self.h)
 	}
 
@@ -205,7 +205,7 @@ impl Rect {
 	/// assert_eq!(new_rect.area(), 100.0);
 	/// ```
 	#[inline(always)]
-	pub fn area(self) -> f32 {
+	pub fn area(&self) -> f32 {
 		self.w * self.h
 	}
 
@@ -222,7 +222,7 @@ impl Rect {
 	/// assert_eq!(new_rect.normalized(), Rect::from_xywh(-10.0, 0.0, 10.0, 10.0));
 	/// ```
 	#[inline(always)]
-	pub fn normalized(self) -> Self {
+	pub fn normalized(&self) -> Self {
 		Self {
 			x: self.left().min(self.right()),
 			y: self.top().min(self.bottom()),
@@ -241,7 +241,7 @@ impl Rect {
 	/// assert_eq!(new_rect.repositioned(10.0, 5.0), Rect::from_xywh(10.0, 5.0, 10.0, 10.0));
 	/// ```
 	#[inline(always)]
-	pub fn repositioned(self, new_x: f32, new_y: f32) -> Self {
+	pub fn repositioned(&self, new_x: f32, new_y: f32) -> Self {
 		Self {
 			x: new_x,
 			y: new_y,
@@ -260,7 +260,7 @@ impl Rect {
 	/// assert_eq!(new_rect.resized(15.0, 5.0), Rect::from_xywh(0.0, 0.0, 15.0, 5.0));
 	/// ```
 	#[inline(always)]
-	pub fn resized(self, new_w: f32, new_h: f32) -> Self {
+	pub fn resized(&self, new_w: f32, new_h: f32) -> Self {
 		Self {
 			x: self.x,
 			y: self.y,
@@ -279,7 +279,7 @@ impl Rect {
 	/// assert!(new_rect.contains_point(5.0, 5.0));
 	/// ```
 	#[inline(always)]
-	pub fn contains_point(self, x: f32, y: f32) -> bool {
+	pub fn contains_point(&self, x: f32, y: f32) -> bool {
 		x >= self.x && x <= self.right() && y >= self.y && y <= self.bottom()
 	}
 
@@ -293,13 +293,13 @@ impl Rect {
 	/// assert!(new_rect.contains_rect(Rect::from_xywh(1.0, 1.0, 8.0, 8.0)));
 	/// ```
 	#[inline(always)]
-	pub fn contains_rect(self, other: Rect) -> bool {
+	pub fn contains_rect(&self, other: Rect) -> bool {
 		self.contains_point(other.x, other.y) && self.contains_point(other.right(), other.bottom())
 	}
 
 	// https://stackoverflow.com/questions/13390333/two-rectangles-intersection/44120056#44120056
 	/// Returns whether the [Rect] overlaps with another [Rect].
-	pub fn overlaps_with_rect(self, other: Rect) -> bool {
+	pub fn overlaps_with_rect(&self, other: Rect) -> bool {
 		!(self.right() < other.x
 			|| other.right() < self.x
 			|| self.bottom() < other.y
