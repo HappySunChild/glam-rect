@@ -14,3 +14,4 @@ pub mod f64;
 pub use self::f64::DRect;
 
 pub mod px;
+pub use self::px::PxRect;
