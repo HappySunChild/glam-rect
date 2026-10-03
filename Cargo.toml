@@ -3,6 +3,9 @@ name = "glam_rect"
 version = "0.1.0"
 edition = "2024"
 repository = "https://github.com/HappySunChild/glam-rect"
+authors = ["HappySunChild"]
+description = "A rectangle extension crate for `glam-rs`"
+license = "MIT"
 
 [dependencies]
 glam = { version = "0.33.*", features = ["f64", "u32"] }
